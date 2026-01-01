@@ -1,0 +1,9 @@
+{
+    "cSpell.words": [
+        "Dodi",
+        "gsap"
+    ],
+    "files.exclude": {
+        "**/.git": false
+    }
+}

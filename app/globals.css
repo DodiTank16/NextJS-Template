@@ -72,3 +72,14 @@ body {
 .delay-800 {
   animation-delay: 0.8s;
 }
+
+#svg-stage {
+  width: 60%;
+  max-height: 60vh;
+  max-width: 500px;
+  overflow: visible;
+}
+
+#gradient {
+  height: 0;
+}

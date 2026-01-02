@@ -66,7 +66,7 @@ export default function Header() {
             atTop ? "text-blue-300" : "text-blue-300"
           }`}
         >
-          ✺ TANK
+          ✺ Tank Corporation
         </Link>
 
         {/* MOBILE TOGGLE */}

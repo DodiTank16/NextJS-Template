@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Footer from "../components/Layout/Footer";
 import Header from "../components/Layout/Header";
@@ -17,6 +17,12 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "First Next.js App",
   description: "This is my first Next.js application!",
+};
+
+export const viewport: Viewport = {
+  themeColor: "white",
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({

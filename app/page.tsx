@@ -177,7 +177,7 @@ export default function page() {
       <main className="bg-indigo-900 text-white">
         <section
           ref={heroRef}
-          className="min-h-screen grid md:grid-cols-2 items-center px-10"
+          className="min-h-screen grid md:grid-cols-2 items-center px-10 pt-25 md:pt-0"
         >
           <div>
             <h1 className="hero-title text-6xl font-bold mb-6">

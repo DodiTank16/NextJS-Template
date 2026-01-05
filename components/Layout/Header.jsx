@@ -1,5 +1,6 @@
 "use client";
 
+import gsap from "gsap";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -18,9 +19,7 @@ export default function Header() {
   const navRef = useRef(null);
   const underlineRef = useRef(null);
 
-  /* -----------------------------
-           Scroll → header morph
-        ----------------------------- */
+  /* ----------------------------- Scroll → header morph ----------------------------- */
   useEffect(() => {
     const onScroll = () => {
       setAtTop(window.scrollY < 50);
@@ -32,26 +31,33 @@ export default function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  /* -----------------------------
-           Cursor-follow underline
-        ----------------------------- */
+  /* ----------------------------- Cursor-follow underline ----------------------------- */
   const moveUnderline = (el) => {
-    if (!underlineRef.current || !navRef.current) return;
+    const nav = navRef.current;
+    const underline = underlineRef.current;
+    if (!nav || !underline) return;
 
+    const navRect = nav.getBoundingClientRect();
     const rect = el.getBoundingClientRect();
-    const parentRect = navRef.current.getBoundingClientRect();
 
-    underlineRef.current.style.width = `${rect.width}px`;
-    underlineRef.current.style.transform = `translateX(${
-      rect.left - parentRect.left
-    }px)`;
-    underlineRef.current.style.opacity = 1;
+    gsap.to(underline, {
+      width: rect.width,
+      x: rect.left - navRect.left,
+      opacity: 1,
+      duration: 0.3,
+      ease: "power3.out",
+    });
   };
 
   const hideUnderline = () => {
-    if (!underlineRef.current) return;
-    underlineRef.current.style.opacity = 0;
+    gsap.to(underlineRef.current, { opacity: 0, duration: 0.2 });
+    // underlineRef.current.style.transform = `translateX(${0}px)`; // optional: reset position of underline
   };
+
+  // const hideUnderline = () => {
+  //   if (!underlineRef.current) return;
+  //   underlineRef.current.style.opacity = 0;
+  // };
 
   return (
     <header
@@ -71,19 +77,24 @@ export default function Header() {
 
         {/* MOBILE TOGGLE */}
         <button
-          className="md:hidden"
           onClick={() => setOpen(!open)}
-          aria-label="Toggle menu"
+          className="relative z-50 md:hidden w-8 h-8 flex flex-col justify-center items-center gap-1"
         >
-          <svg
-            className={`w-6 h-6 text-blue-300 transition-transform duration-300`}
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            viewBox="0 0 24 24"
-          >
-            <path strokeLinecap="round" d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
+          <span
+            className={`h-[2px] w-6 bg-blue-300 transition-all duration-300 ${
+              open ? "rotate-45 translate-y-[6px]" : ""
+            }`}
+          />
+          <span
+            className={`h-[2px] w-6 bg-blue-300 transition-all duration-300 ${
+              open ? "opacity-0" : ""
+            }`}
+          />
+          <span
+            className={`h-[2px] w-6 bg-blue-300 transition-all duration-300 ${
+              open ? "-rotate-45 -translate-y-[6px]" : ""
+            }`}
+          />
         </button>
 
         {/* NAV */}
@@ -91,16 +102,17 @@ export default function Header() {
           ref={navRef}
           onMouseLeave={hideUnderline}
           className={`
-            absolute md:static top-full left-0 w-full md:w-auto
-            flex-col md:flex-row md:flex gap-8
-            mt-6 md:mt-0 px-6 md:px-0
-            ${open ? "flex" : "hidden"}
-          `}
+    absolute md:static top-full left-0 w-full md:w-auto flex flex-col md:flex-row gap-6 md:gap-8 px-6 md:px-0 mt-4 md:mt-0 bg-indigo-800 md:bg-transparent overflow-hidden transition-all duration-500 ease-in
+    ${
+      open
+        ? "max-h-500 h-40 opacity-100 translate-y-0 pointer-events-auto py-6"
+        : "max-h-0 opacity-0 -translate-y-2 pointer-events-none md:pointer-events-auto md:opacity-100 md:translate-y-0 md:max-h-none"
+    }`}
         >
-          {/* CURSOR UNDERLINE */}
+          {/* DESKTOP CURSOR UNDERLINE */}
           <span
             ref={underlineRef}
-            className="absolute bottom-0 h-[2px] bg-current transition-all duration-300 opacity-0 hidden md:block"
+            className="absolute bottom-0 bg-current opacity-0 transition-all duration-300 hidden md:block"
           />
 
           {NAV_ITEMS.map((item) => {
@@ -111,15 +123,15 @@ export default function Header() {
                 key={item.href}
                 href={item.href}
                 onMouseEnter={(e) => moveUnderline(e.currentTarget)}
-                className={`relative transition-colors text-blue-300 ${
+                className={`relative text-blue-300 transition-all ${
                   isActive
-                    ? "font-semibold opacity-100 border-b-2 border-current"
+                    ? "font-semibold opacity-100"
                     : "opacity-70 hover:opacity-100"
                 }`}
               >
                 {item.label}
 
-                {/* ACTIVE INDICATOR (mobile + no hover) */}
+                {/* MOBILE ACTIVE INDICATOR */}
                 {isActive && (
                   <span className="absolute -bottom-2 left-0 w-full h-[2px] bg-current md:hidden" />
                 )}

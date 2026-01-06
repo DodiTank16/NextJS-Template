@@ -1,25 +1,80 @@
 "use client";
 
+import { useLayoutEffect, useRef } from "react";
+import gsap from "gsap";
 import Image from "next/image";
 import Link from "next/link";
+
 import DesertAdventureImg from "../../assets/images/Desert-Adventure.jpg";
-import Ocean from "../../assets/images/Ocean.avif";
+import Ocean from "../../assets/images/Ocean.jpg";
 
 export default function Blogs() {
+  const sectionRef = useRef(null);
+  const titleRef = useRef(null);
+  const subtitleRef = useRef(null);
+  const cardsRef = useRef([]);
+
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      // Initial states
+      gsap.set([titleRef.current, subtitleRef.current], {
+        y: 40,
+        autoAlpha: 0,
+      });
+
+      gsap.set(cardsRef.current, {
+        y: 60,
+        autoAlpha: 0,
+      });
+
+      // Timeline
+      const tl = gsap.timeline({
+        defaults: { ease: "power3.out" },
+      });
+
+      tl.to(titleRef.current, {
+        y: 0,
+        autoAlpha: 1,
+        duration: 1,
+      })
+        .to(
+          subtitleRef.current,
+          {
+            y: 0,
+            autoAlpha: 1,
+            duration: 0.8,
+          },
+          "-=0.4"
+        )
+        .to(
+          cardsRef.current,
+          {
+            y: 0,
+            autoAlpha: 1,
+            duration: 0.9,
+            stagger: 0.2,
+          },
+          "-=0.3"
+        );
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section className="bg-white dark:bg-indigo-900 overflow-hidden">
+    <section ref={sectionRef} className="py-30 bg-gray-50 dark:bg-indigo-900">
       {/* Title Section */}
-      <div className="text-center py-12">
-        <h1 className="text-4xl font-bold text-black dark:text-white mb-4 opacity-0 translate-y-6 animate-fadeUp">
+      <div className="text-center">
+        <h1
+          ref={titleRef}
+          className="mb-4 text-4xl font-bold text-gray-900 sm:text-5xl dark:text-white"
+        >
           Discover New Adventures
         </h1>
 
         <p
-          className="
-            text-lg text-gray-600 dark:text-gray-400
-            opacity-0 translate-y-6
-            animate-fadeUp delay-200
-          "
+          ref={subtitleRef}
+          className="text-lg text-gray-600 dark:text-gray-400"
         >
           Explore, discover, and find inspiration through these exciting
           journeys.
@@ -29,12 +84,11 @@ export default function Blogs() {
       {/* Content */}
       <div className="px-8 py-10 mx-auto lg:max-w-screen-xl sm:max-w-xl md:max-w-full sm:px-12 md:px-16 lg:py-20 sm:py-16">
         <div className="grid gap-x-8 gap-y-12 sm:gap-y-16 md:grid-cols-2 lg:grid-cols-3">
-          {/* Card */}
           {cards.map((card, i) => (
             <div
               key={card.title}
-              className={`relative opacity-0 translate-y-8 animate-fadeUp delay-${(i + 2) * 200
-                }`}
+              ref={(el) => (cardsRef.current[i] = el)}
+              className="relative"
             >
               <Link
                 className="block overflow-hidden group rounded-xl shadow-lg relative"
@@ -45,21 +99,11 @@ export default function Blogs() {
                   alt={card.title}
                   width={1080}
                   height={720}
-                  className="
-                    object-cover w-full h-56 sm:h-64
-                    transition-transform duration-700 ease-out
-                    group-hover:scale-110
-                  "
+                  loading="lazy"
+                  className="object-cover w-full h-56 sm:h-64 transition-transform duration-700 ease-out group-hover:scale-110"
                 />
 
-                {/* Overlay */}
-                <div
-                  className="
-                    absolute inset-0 bg-black/0
-                    transition-all duration-700
-                    group-hover:bg-black/20
-                  "
-                />
+                <div className="absolute inset-0 bg-black/0 transition-all duration-700 group-hover:bg-black/20" />
               </Link>
 
               <div className="relative mt-5 transition-all duration-500 group-hover:-translate-y-1">
@@ -67,13 +111,7 @@ export default function Blogs() {
                   {card.date}
                 </p>
 
-                <h2
-                  className="
-                    text-2xl font-bold leading-5 text-black dark:text-white mb-3
-                    transition-colors duration-300
-                    hover:text-purple-700 dark:hover:text-purple-400
-                  "
-                >
+                <h2 className="text-2xl font-bold leading-5 text-black dark:text-white mb-3">
                   {card.title}
                 </h2>
 

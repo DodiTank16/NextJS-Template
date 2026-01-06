@@ -4,7 +4,7 @@ import { useAnimations, useGLTF } from "@react-three/drei";
 import gsap from "gsap";
 import { MorphSVGPlugin } from "gsap/MorphSVGPlugin";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 gsap.registerPlugin(MorphSVGPlugin);
 
@@ -132,18 +132,13 @@ export default function page() {
   const panelsRef = useRef<HTMLElement[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const sectionRef = useRef(null);
+  const titleRef = useRef(null);
+  const textRef = useRef(null);
+  const btnRef = useRef(null);
+
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
-
-    // HERO TIMELINE
-    const ctx = gsap.context(() => {
-      const heroTl = gsap.timeline();
-
-      heroTl
-        .from(".hero-title", { y: 120, opacity: 0, duration: 1 })
-        .from(".hero-text", { y: 60, opacity: 0, duration: 0.8 }, "-=0.4")
-        .from(".hero-btn", { scale: 0.8, opacity: 0, duration: 0.6 }, "-=0.3");
-    });
 
     // PINNED PANELS
     panelsRef.current.forEach((panel) => {
@@ -170,71 +165,71 @@ export default function page() {
         }
       );
     });
-
-    return () => ctx.revert();
   }, []);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.set([".hero-title", ".hero-text", ".hero-btn"], { opacity: 0 });
+      // Initial state
+      gsap.set(titleRef.current, { y: 80, autoAlpha: 0 });
+      gsap.set(textRef.current, { y: 40, autoAlpha: 0 });
+      gsap.set(btnRef.current, { scale: 0.85, autoAlpha: 0 });
 
-      const tl = gsap.timeline({
-        defaults: { ease: "power3.out" },
-      });
+      const tl = gsap.timeline({ ease: "power3.out" });
 
-      tl.fromTo(
-        ".hero-title",
-        { y: 80, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1 }
-      )
-        .fromTo(
-          ".hero-text",
-          { y: 30, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.8 },
+      tl.to(titleRef.current, {
+        y: 0,
+        autoAlpha: 1,
+        duration: 1,
+      })
+        .to(
+          textRef.current,
+          {
+            y: 0,
+            autoAlpha: 1,
+            duration: 0.8,
+          },
           "-=0.4"
         )
-        .fromTo(
-          ".hero-btn",
-          { y: 20, opacity: 0, scale: 0.95 },
-          { y: 0, opacity: 1, scale: 1, duration: 0.6 },
+        .to(
+          btnRef.current,
+          {
+            scale: 1,
+            autoAlpha: 1,
+            duration: 0.6,
+          },
           "-=0.3"
         );
-    });
+    }, sectionRef);
 
     return () => ctx.revert();
   }, []);
 
   return (
     <>
-      {loading && <Loader onComplete={() => setLoading(false)} />}
+      {/* {loading && <Loader onComplete={() => setLoading(false)} />} */}
 
       <main className="bg-indigo-900 text-white">
-        <section className="min-h-screen grid md:grid-cols-2 items-center px-10 pt-25 md:pt-0 text-center md:text-left">
+        <section
+          ref={sectionRef}
+          className="min-h-screen grid md:grid-cols-2 items-center px-10 pt-25 md:pt-0 text-center md:text-left"
+        >
           <div>
-            <h1 className="hero-title text-6xl font-bold mb-6">
+            <h1 ref={titleRef} className="hero-title text-6xl font-bold mb-6">
               Engineering Tomorrow
             </h1>
-            <p className="hero-text text-slate-300 mb-8">
+
+            <p ref={textRef} className="hero-text text-slate-300 mb-8">
               Advanced construction powered by innovation and precision.
             </p>
-            <button className="hero-btn px-8 py-4 bg-yellow-500 text-black rounded-full">
+
+            <button
+              ref={btnRef}
+              className="hero-btn px-8 py-4 bg-yellow-500 text-black rounded-full"
+            >
               Start Project
             </button>
           </div>
 
-          {/* THREE.JS SCENE */}
-          {/* <div className="h-[750px]">
-            <Canvas camera={{ position: [5, 5, 5], fov: 80 }}>
-              <ambientLight intensity={0.8} />
-              <directionalLight position={[10, 10, 5]} intensity={1} />
-              <SciFiCharacter />
-              <OrbitControls
-                enableZoom={false}
-                enablePan={false}
-                autoRotate={true}
-              />
-            </Canvas>
-          </div> */}
           <div className="h-[400px] md:h-[750px] flex items-center justify-center">
             <MorphSVG />
           </div>

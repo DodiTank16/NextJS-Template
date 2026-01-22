@@ -167,6 +167,20 @@ export default function page() {
     return () => tl.kill();
   }, []);
 
+  useEffect(() => {
+    // Paragraph animation
+    const words = textRef.current.querySelectorAll(".word");
+    gsap.from(words, {
+      y: 20,
+      opacity: 0,
+      stagger: 0.05,
+      duration: 0.8,
+      delay: 0.5,
+      ease: "power3.out",
+    });
+
+  }, []);
+
   return (
     <>
       <main className="text-white">

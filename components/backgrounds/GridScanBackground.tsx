@@ -1,11 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import {
-  EffectComposer,
-  RenderPass,
-  EffectPass,
-  BloomEffect,
-  ChromaticAberrationEffect,
-} from "postprocessing";
+import { EffectComposer, RenderPass, EffectPass, BloomEffect, ChromaticAberrationEffect } from "postprocessing";
 import * as THREE from "three";
 import * as faceapi from "face-api.js";
 
@@ -413,12 +407,7 @@ const GridScanBackground: React.FC<GridScanProps> = ({
     const onClick = async () => {
       const nowSec = performance.now() / 1000;
       if (scanOnClick) pushScan(nowSec);
-      if (
-        enableGyro &&
-        typeof window !== "undefined" &&
-        (window as any).DeviceOrientationEvent &&
-        (DeviceOrientationEvent as any).requestPermission
-      ) {
+      if (enableGyro && (window as any).DeviceOrientationEvent && (DeviceOrientationEvent as any).requestPermission) {
         try {
           await (DeviceOrientationEvent as any).requestPermission();
         } catch {}
@@ -471,11 +460,7 @@ const GridScanBackground: React.FC<GridScanProps> = ({
 
     const uniforms = {
       iResolution: {
-        value: new THREE.Vector3(
-          container.clientWidth,
-          container.clientHeight,
-          renderer.getPixelRatio(),
-        ),
+        value: new THREE.Vector3(container.clientWidth, container.clientHeight, renderer.getPixelRatio()),
       },
       iTime: { value: 0 },
       uSkew: { value: new THREE.Vector2(0, 0) },
@@ -498,12 +483,7 @@ const GridScanBackground: React.FC<GridScanProps> = ({
       uScanDuration: { value: scanDuration },
       uScanDelay: { value: scanDelay },
       uScanDirection: {
-        value:
-          scanDirection === "backward"
-            ? 1
-            : scanDirection === "pingpong"
-              ? 2
-              : 0,
+        value: scanDirection === "backward" ? 1 : scanDirection === "pingpong" ? 2 : 0,
       },
       uScanStarts: { value: new Array(MAX_SCANS).fill(0) },
       uScanCount: { value: 0 },
@@ -553,16 +533,8 @@ const GridScanBackground: React.FC<GridScanProps> = ({
 
     const onResize = () => {
       renderer.setSize(container.clientWidth, container.clientHeight);
-      material.uniforms.iResolution.value.set(
-        container.clientWidth,
-        container.clientHeight,
-        renderer.getPixelRatio(),
-      );
-      if (composerRef.current)
-        composerRef.current.setSize(
-          container.clientWidth,
-          container.clientHeight,
-        );
+      material.uniforms.iResolution.value.set(container.clientWidth, container.clientHeight, renderer.getPixelRatio());
+      if (composerRef.current) composerRef.current.setSize(container.clientWidth, container.clientHeight);
     };
     window.addEventListener("resize", onResize);
 
@@ -573,49 +545,21 @@ const GridScanBackground: React.FC<GridScanProps> = ({
       last = now;
 
       lookCurrent.current.copy(
-        smoothDampVec2(
-          lookCurrent.current,
-          lookTarget.current,
-          lookVel.current,
-          smoothTime,
-          maxSpeed,
-          dt,
-        ),
+        smoothDampVec2(lookCurrent.current, lookTarget.current, lookVel.current, smoothTime, maxSpeed, dt),
       );
 
-      const tiltSm = smoothDampFloat(
-        tiltCurrent.current,
-        tiltTarget.current,
-        { v: tiltVel.current },
-        smoothTime,
-        maxSpeed,
-        dt,
-      );
+      const tiltSm = smoothDampFloat(tiltCurrent.current, tiltTarget.current, { v: tiltVel.current }, smoothTime, maxSpeed, dt);
       tiltCurrent.current = tiltSm.value;
       tiltVel.current = tiltSm.v;
 
-      const yawSm = smoothDampFloat(
-        yawCurrent.current,
-        yawTarget.current,
-        { v: yawVel.current },
-        smoothTime,
-        maxSpeed,
-        dt,
-      );
+      const yawSm = smoothDampFloat(yawCurrent.current, yawTarget.current, { v: yawVel.current }, smoothTime, maxSpeed, dt);
       yawCurrent.current = yawSm.value;
       yawVel.current = yawSm.v;
 
-      const skew = new THREE.Vector2(
-        lookCurrent.current.x * skewScale,
-        -lookCurrent.current.y * yBoost * skewScale,
-      );
+      const skew = new THREE.Vector2(lookCurrent.current.x * skewScale, -lookCurrent.current.y * yBoost * skewScale);
       material.uniforms.uSkew.value.set(skew.x, skew.y);
       material.uniforms.uTilt.value = tiltCurrent.current * tiltScale;
-      material.uniforms.uYaw.value = THREE.MathUtils.clamp(
-        yawCurrent.current * yawScale,
-        -0.6,
-        0.6,
-      );
+      material.uniforms.uYaw.value = THREE.MathUtils.clamp(yawCurrent.current * yawScale, -0.6, 0.6);
 
       material.uniforms.iTime.value = now / 1000;
       renderer.clear(true, true, true);
@@ -661,15 +605,13 @@ const GridScanBackground: React.FC<GridScanProps> = ({
       (u.uLinesColor.value as THREE.Color).copy(srgbColor(linesColor));
       (u.uScanColor.value as THREE.Color).copy(srgbColor(scanColor));
       u.uGridScale.value = gridScale;
-      u.uLineStyle.value =
-        lineStyle === "dashed" ? 1 : lineStyle === "dotted" ? 2 : 0;
+      u.uLineStyle.value = lineStyle === "dashed" ? 1 : lineStyle === "dotted" ? 2 : 0;
       u.uLineJitter.value = Math.max(0, Math.min(1, lineJitter || 0));
       u.uBloomOpacity.value = Math.max(0, bloomIntensity);
       u.uNoise.value = Math.max(0, noiseIntensity);
       u.uScanGlow.value = scanGlow;
       u.uScanOpacity.value = Math.max(0, Math.min(1, scanOpacity));
-      u.uScanDirection.value =
-        scanDirection === "backward" ? 1 : scanDirection === "pingpong" ? 2 : 0;
+      u.uScanDirection.value = scanDirection === "backward" ? 1 : scanDirection === "pingpong" ? 2 : 0;
       u.uScanSoftness.value = scanSoftness;
       u.uPhaseTaper.value = scanPhaseTaper;
       u.uScanDuration.value = Math.max(0.05, scanDuration);
@@ -775,9 +717,7 @@ const GridScanBackground: React.FC<GridScanProps> = ({
         if (ts - lastDetect >= 33) {
           lastDetect = ts;
           try {
-            const res = await faceapi
-              .detectSingleFace(video, opts)
-              .withFaceLandmarks(true);
+            const res = await faceapi.detectSingleFace(video, opts).withFaceLandmarks(true);
             if (res && res.detection) {
               const det = res.detection;
               const box = det.box;
@@ -795,10 +735,7 @@ const GridScanBackground: React.FC<GridScanProps> = ({
 
               const look = new THREE.Vector2(Math.tanh(nxm), Math.tanh(nym));
 
-              const faceSize = Math.min(
-                1,
-                Math.hypot(box.width / vw, box.height / vh),
-              );
+              const faceSize = Math.min(1, Math.hypot(box.width / vw, box.height / vh));
               const depthScale = 1 + depthResponse * (faceSize - 0.25);
               lookTarget.current.copy(look.multiplyScalar(depthScale));
 
@@ -811,19 +748,14 @@ const GridScanBackground: React.FC<GridScanProps> = ({
               tiltTarget.current = median(bufT.current);
 
               const nose = res.landmarks.getNose();
-              const tip =
-                nose[nose.length - 1] || nose[Math.floor(nose.length / 2)];
+              const tip = nose[nose.length - 1] || nose[Math.floor(nose.length / 2)];
               const jaw = res.landmarks.getJawOutline();
               const leftCheek = jaw[3] || jaw[2];
               const rightCheek = jaw[13] || jaw[14];
               const dL = dist2(tip, leftCheek);
               const dR = dist2(tip, rightCheek);
               const eyeDist = Math.hypot(rc.x - lc.x, rc.y - lc.y) + 1e-6;
-              let yawSignal = THREE.MathUtils.clamp(
-                (dR - dL) / (eyeDist * 1.6),
-                -1,
-                1,
-              );
+              let yawSignal = THREE.MathUtils.clamp((dR - dL) / (eyeDist * 1.6), -1, 1);
               yawSignal = Math.tanh(yawSignal);
               medianPush(bufYaw.current, yawSignal, 5);
               yawTarget.current = median(bufYaw.current);
@@ -838,9 +770,7 @@ const GridScanBackground: React.FC<GridScanProps> = ({
         }
 
         if ("requestVideoFrameCallback" in HTMLVideoElement.prototype) {
-          (video as any).requestVideoFrameCallback(() =>
-            detect(performance.now()),
-          );
+          (video as any).requestVideoFrameCallback(() => detect(performance.now()));
         } else {
           requestAnimationFrame(detect);
         }
@@ -864,20 +794,10 @@ const GridScanBackground: React.FC<GridScanProps> = ({
   }, [enableWebcam, modelsReady, depthResponse]);
 
   return (
-    <div
-      ref={containerRef}
-      className={`relative w-full h-full overflow-hidden ${className ?? ""}`}
-      style={style}
-    >
+    <div ref={containerRef} className={`relative w-full h-full overflow-hidden ${className ?? ""}`} style={style}>
       {showPreview && (
         <div className="absolute right-3 bottom-3 w-[220px] h-[132px] rounded-lg overflow-hidden border border-white/25 shadow-[0_4px_16px_rgba(0,0,0,0.4)] bg-black text-white text-[12px] leading-[1.2] font-sans pointer-events-none">
-          <video
-            ref={videoRef}
-            muted
-            playsInline
-            autoPlay
-            className="w-full h-full object-cover -scale-x-100"
-          />
+          <video ref={videoRef} muted playsInline autoPlay className="w-full h-full object-cover -scale-x-100" />
           <div className="absolute left-2 top-2 px-[6px] py-[2px] bg-black/50 rounded-[6px] backdrop-blur-[4px]">
             {enableWebcam
               ? modelsReady
@@ -919,10 +839,7 @@ function smoothDampVec2(
   if (change.length() > maxChange) change.setLength(maxChange);
 
   target = current.clone().sub(change);
-  const temp = currentVelocity
-    .clone()
-    .addScaledVector(change, omega)
-    .multiplyScalar(deltaTime);
+  const temp = currentVelocity.clone().addScaledVector(change, omega).multiplyScalar(deltaTime);
   currentVelocity.sub(temp.clone().multiplyScalar(omega));
   currentVelocity.multiplyScalar(exp);
 

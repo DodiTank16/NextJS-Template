@@ -180,19 +180,31 @@ export default function page() {
     };
   }, []);
 
-  useEffect(() => {
-    // Paragraph animation
+  useLayoutEffect(() => {
     if (!textRef.current) return;
-    const words = textRef.current.querySelectorAll(".word");
-    gsap.from(words, {
-      y: 20,
-      opacity: 0,
-      stagger: 0.05,
-      duration: 0.8,
-      delay: 0.5,
-      ease: "power3.out",
-    });
-  }, []);
+
+    const ctx = gsap.context(() => {
+      const words = textRef.current!.querySelectorAll(".word");
+
+      gsap.fromTo(
+        words,
+        {
+          y: 20,
+          opacity: 0,
+        },
+        {
+          y: 0,
+          opacity: 1,
+          stagger: 0.05,
+          duration: 0.8,
+          ease: "power3.out",
+          delay: 0.2,
+        },
+      );
+    }, textRef);
+
+    return () => ctx.revert();
+  }, [pathname]);
 
   return (
     <>
@@ -270,7 +282,9 @@ export default function page() {
             <div className="flex flex-col h-[400px] md:h-175 flex items-center justify-center overflow-auto">
               {/* <MorphSVG /> */}
               <p className="text-2xl pt-30">Playful Blocks</p>
-              {inView && ( <Spline scene="https://prod.spline.design/pUo-4DqsjUCT9Nut/scene.splinecode" /> )}
+              {inView && (
+                <Spline scene="https://prod.spline.design/pUo-4DqsjUCT9Nut/scene.splinecode" />
+              )}
             </div>
             {/* <SciFiCharacter /> */}
           </div>

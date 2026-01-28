@@ -80,7 +80,7 @@ export default function Page() {
           {
             y: 100,
             scrollTrigger: {
-              trigger: img,
+              trigger: img as gsap.DOMTarget,
               scrub: true,
             },
           },

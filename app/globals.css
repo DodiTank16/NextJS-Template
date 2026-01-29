@@ -3,6 +3,12 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+:root::-webkit-scrollbar {
+display: none; /* Hides the scrollbar */
 }
 
 @theme inline {
@@ -150,8 +156,8 @@ body {
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(255,105,180,0.2) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,105,180,0.2) 1px, transparent 1px);
+    linear-gradient(rgba(255, 105, 180, 0.2) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 105, 180, 0.2) 1px, transparent 1px);
   background-size: 70px 70px;
   opacity: 0.35;
 }
@@ -170,11 +176,9 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(
-    circle at center,
-    transparent 35%,
-    #0b0615 75%
-  );
+  background: radial-gradient(circle at center,
+      transparent 35%,
+      #0b0615 75%);
 }
 
 .magnetic-word {

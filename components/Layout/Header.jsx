@@ -61,6 +61,7 @@ export default function Header() {
 
     if (!progressRef.current) return;
 
+
     const ctx = gsap.context(() => {
       gsap.to(progressRef.current, {
         scaleX: 1,

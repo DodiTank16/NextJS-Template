@@ -26,7 +26,7 @@ export default function AboutUs() {
   }, []);
 
   return (
-    <section className="py-30 bg-gray-50 dark:bg-indigo-900">
+    <section className="py-30 bg-gray-50 dark:bg-slate-900">
       <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
         {/* Heading */}
         <div className="mb-16 text-center">

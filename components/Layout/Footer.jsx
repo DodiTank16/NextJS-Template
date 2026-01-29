@@ -1,10 +1,10 @@
 'use client';
 const Footer = () => {
-    return <footer className="bg-[#F4F1EC] shadow-lg mt-auto">
+    return <footer className="bg-black/90 shadow-lg mt-auto">
         <div className="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {/* Column 1: Company Info */}
             <div>
-                <h3 className="text-xl font-semibold text-gray-800">TANK</h3>
+                <h3 className="text-xl font-semibold text-blue-300">TANK CORPORATION</h3>
                 <p className="text-gray-500 mt-3">
                     Delivering quality products with a seamless shopping experience.
                 </p>
@@ -12,12 +12,12 @@ const Footer = () => {
             </div>
             {/* Column 2: Quick Links */}
             <div>
-                <h3 className="text-xl font-semibold text-gray-800">Quick Links</h3>
+                <h3 className="text-xl font-semibold text-gray-500 cursor-default">Quick Links</h3>
                 <ul className="mt-3 space-y-2">
                     <li>
                         <a
                             href="#"
-                            className="text-gray-500 hover:text-indigo-600 transition"
+                            className="text-gray-500 hover:text-blue-300 transition"
                         >
                             Home
                         </a>
@@ -25,7 +25,7 @@ const Footer = () => {
                     <li>
                         <a
                             href="#"
-                            className="text-gray-500 hover:text-indigo-600 transition"
+                            className="text-gray-500 hover:text-blue-300 transition"
                         >
                             Shop
                         </a>
@@ -33,7 +33,7 @@ const Footer = () => {
                     <li>
                         <a
                             href="#"
-                            className="text-gray-500 hover:text-indigo-600 transition"
+                            className="text-gray-500 hover:text-blue-300 transition"
                         >
                             About Us
                         </a>
@@ -41,7 +41,7 @@ const Footer = () => {
                     <li>
                         <a
                             href="#"
-                            className="text-gray-500 hover:text-indigo-600 transition"
+                            className="text-gray-500 hover:text-blue-300 transition"
                         >
                             Contact
                         </a>
@@ -50,12 +50,12 @@ const Footer = () => {
             </div>
             {/* Column 3: Customer Service */}
             <div>
-                <h3 className="text-xl font-semibold text-gray-800">Customer Service</h3>
+                <h3 className="text-xl font-semibold text-gray-500 cursor-default">Customer Service</h3>
                 <ul className="mt-3 space-y-2">
                     <li>
                         <a
                             href="#"
-                            className="text-gray-500 hover:text-indigo-600 transition"
+                            className="text-gray-500 hover:text-blue-300 transition"
                         >
                             FAQs
                         </a>
@@ -63,7 +63,7 @@ const Footer = () => {
                     <li>
                         <a
                             href="#"
-                            className="text-gray-500 hover:text-indigo-600 transition"
+                            className="text-gray-500 hover:text-blue-300 transition"
                         >
                             Shipping &amp; Returns
                         </a>
@@ -71,7 +71,7 @@ const Footer = () => {
                     <li>
                         <a
                             href="#"
-                            className="text-gray-500 hover:text-indigo-600 transition"
+                            className="text-gray-500 hover:text-blue-300 transition"
                         >
                             Privacy Policy
                         </a>
@@ -79,7 +79,7 @@ const Footer = () => {
                     <li>
                         <a
                             href="#"
-                            className="text-gray-500 hover:text-indigo-600 transition"
+                            className="text-gray-500 hover:text-blue-300 transition"
                         >
                             Terms &amp; Conditions
                         </a>
@@ -88,7 +88,7 @@ const Footer = () => {
             </div>
             {/* Column 4: Newsletter Subscription */}
             <div>
-                <h3 className="text-xl font-semibold text-gray-800">Stay Updated</h3>
+                <h3 className="text-xl font-semibold text-gray-500 cursor-default">Stay Updated</h3>
                 <p className="text-gray-500 mt-3">
                     Subscribe to our newsletter for exclusive deals and updates.
                 </p>
@@ -96,9 +96,9 @@ const Footer = () => {
                     <input
                         type="email"
                         placeholder="Enter your email"
-                        className="w-full px-4 py-3 border border-gray-300 text-black rounded-l-lg focus:outline-none focus:ring-1"
+                        className="w-full px-4 py-3 border border-gray-300 text-white rounded-l-lg focus:outline-none focus:ring-1 focus:border-yellow-500"
                     />
-                    <button className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-3 rounded-r-lg transition">
+                    <button className="bg-[#F4F1EC] hover:bg-blue-300 text-gray-700 px-4 py-3 rounded-r-lg transition">
                         Subscribe
                     </button>
                 </div>

@@ -272,7 +272,7 @@ export default function Page() {
               </p>
               <button
                 ref={btnRef}
-                className="hero-btn px-8 py-4 bg-[#F4F1EC] text-black rounded-full hover:cursor-pointer hover:bg-yellow-400 hover:shadow-lg"
+                className="hero-btn px-8 py-4 text-black rounded-full hover:cursor-pointer bg-[#F4F1EC] hover:bg-yellow-400 hover:shadow-lg"
               >
                 View Project
               </button>
@@ -319,7 +319,7 @@ export default function Page() {
           <h2 className="text-4xl font-bold mb-6">Let’s Build Together</h2>
           <button
             type="button"
-            className="px-10 py-4 bg-black text-white rounded-full"
+            className="px-10 py-4 text-black rounded-full bg-[#F4F1EC] hover:bg-blue-300"
           >
             Contact Us
           </button>

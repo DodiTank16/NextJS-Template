@@ -61,7 +61,6 @@ export default function Header() {
 
     if (!progressRef.current) return;
 
-
     const ctx = gsap.context(() => {
       gsap.to(progressRef.current, {
         scaleX: 1,
@@ -95,31 +94,29 @@ export default function Header() {
         {/* LOGO */}
         <Link
           href="/"
-          className={`font-bold uppercase tracking-tight transition-colors ${
-            atTop ? "text-blue-300" : "text-blue-300"
-          }`}
+          className={`font-bold uppercase tracking-tight transition-colors text-blue-300 hover:text-yellow-500 text-lg md:text-xl lg:text-lg`}
         >
-          ✺ Tank Corporation
+          <span className={!atTop ? "text-yellow-500" : ""}>✺</span> Tank Corporation
         </Link>
 
         {/* MOBILE TOGGLE */}
         <button
           onClick={() => setOpen(!open)}
-          className="relative z-50 md:hidden w-8 h-8 flex flex-col justify-center items-center gap-1"
+          className="relative z-50 md:hidden w-8 h-8 flex flex-col justify-center items-center gap-1 cursor-pointer hover:text-yellow-300"
         >
           <span
             className={`h-[2px] w-6 bg-blue-300 transition-all duration-300 ${
-              open ? "rotate-45 translate-y-[6px]" : ""
+              open ? "rotate-45 translate-y-[6px]" : "hover:bg-yellow-300"
             }`}
           />
           <span
             className={`h-[2px] w-6 bg-blue-300 transition-all duration-300 ${
-              open ? "opacity-0" : ""
+              open ? "opacity-0" : "hover:bg-yellow-300"
             }`}
           />
           <span
             className={`h-[2px] w-6 bg-blue-300 transition-all duration-300 ${
-              open ? "-rotate-45 -translate-y-[6px]" : ""
+              open ? "-rotate-45 -translate-y-[6px]" : "hover:bg-yellow-300"
             }`}
           />
         </button>
@@ -129,7 +126,7 @@ export default function Header() {
           ref={navRef}
           onMouseLeave={hideUnderline}
           className={`
-    absolute md:static top-full left-0 w-full md:w-auto flex flex-col md:flex-row gap-6 md:gap-8 px-6 md:px-0 mt-4 md:mt-0 bg-indigo-800 md:bg-transparent overflow-hidden transition-all duration-500 ease-in
+    absolute md:static top-full left-0 w-full md:w-auto flex flex-col md:flex-row gap-6 md:gap-8 px-6 md:px-0 mt-4 md:mt-0 bg-[#F4F1EC] md:bg-transparent overflow-hidden transition-all duration-500 ease-in
     ${
       open
         ? "max-h-500 h-40 opacity-100 translate-y-0 pointer-events-auto py-6"
@@ -150,10 +147,10 @@ export default function Header() {
                 key={item.href}
                 href={item.href}
                 onMouseEnter={(e) => moveUnderline(e.currentTarget)}
-                className={`relative text-blue-300 transition-all ${
+                className={`relative text-blue-300 transition-all hover:text-yellow-500 ${
                   isActive
                     ? "font-semibold text-yellow-500 opacity-100"
-                    : "opacity-70 hover:opacity-100"
+                    : "opacity-70 hover:opacity-100 hover:text-lg"
                 }`}
               >
                 {item.label}

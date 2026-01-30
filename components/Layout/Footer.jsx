@@ -27,7 +27,7 @@ const Footer = () => {
                     </li>
                     <li>
                         <Link
-                            href="/projects"
+                            href="/test"
                             className="text-gray-500 hover:text-blue-300 transition"
                         >
                             Projects
